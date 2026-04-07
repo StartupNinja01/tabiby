@@ -25,12 +25,12 @@ export function Navbar() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-8 font-medium text-sm">
-          <button onClick={() => navigate('/doctors')} className="text-foreground/80 hover:text-primary transition-colors">
+          <button onClick={() => navigate('/search')} className="text-foreground/80 hover:text-primary transition-colors">
             {t('nav.findDoctor')}
           </button>
-          <a href="#specialties" className="text-foreground/80 hover:text-primary transition-colors">{t('nav.specialties')}</a>
-          <a href="#" className="text-foreground/80 hover:text-primary transition-colors">{t('nav.forClinics')}</a>
-          <a href="#" className="text-foreground/80 hover:text-primary transition-colors">{t('nav.help')}</a>
+          <button onClick={() => navigate('/search')} className="text-foreground/80 hover:text-primary transition-colors">{t('nav.specialties')}</button>
+          <button onClick={() => navigate('/for-providers')} className="text-foreground/80 hover:text-primary transition-colors">{t('nav.forClinics')}</button>
+          <button onClick={() => navigate('/help')} className="text-foreground/80 hover:text-primary transition-colors">{t('nav.help')}</button>
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
@@ -71,11 +71,12 @@ export function Navbar() {
 
       {mobileOpen && (
         <div className="md:hidden absolute top-20 left-0 w-full bg-background border-b border-border p-4 flex flex-col gap-4 shadow-lg z-50">
-          <button onClick={() => { navigate('/doctors'); setMobileOpen(false); }} className="font-medium p-2 hover:bg-accent rounded-lg text-start">
+          <button onClick={() => { navigate('/search'); setMobileOpen(false); }} className="font-medium p-2 hover:bg-accent rounded-lg text-start">
             {t('nav.findDoctor')}
           </button>
-          <a href="#specialties" className="font-medium p-2 hover:bg-accent rounded-lg" onClick={() => setMobileOpen(false)}>{t('nav.specialties')}</a>
-          <a href="#" className="font-medium p-2 hover:bg-accent rounded-lg" onClick={() => setMobileOpen(false)}>{t('nav.forClinics')}</a>
+          <button onClick={() => { navigate('/search'); setMobileOpen(false); }} className="font-medium p-2 hover:bg-accent rounded-lg text-start">{t('nav.specialties')}</button>
+          <button onClick={() => { navigate('/for-providers'); setMobileOpen(false); }} className="font-medium p-2 hover:bg-accent rounded-lg text-start">{t('nav.forClinics')}</button>
+          <button onClick={() => { navigate('/help'); setMobileOpen(false); }} className="font-medium p-2 hover:bg-accent rounded-lg text-start">{t('nav.help')}</button>
           <div className="h-px bg-border" />
           <div className="flex items-center gap-1 border border-border rounded-lg overflow-hidden w-fit">
             <Globe className="w-4 h-4 text-muted-foreground ml-2" />

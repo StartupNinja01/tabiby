@@ -61,48 +61,56 @@ const CITY_KEYS: I18nKey[] = [
   'city.msheireb',
 ];
 
-const DOCTORS: Array<{
-  nameKey: I18nKey;
-  specKey: I18nKey;
+const FEATURED_DOCTORS: Array<{
+  id: number;
+  name: string;
+  spec: string;
   img: string;
   rating: number;
   reviews: number;
-  locationKey: I18nKey;
-  availKey: I18nKey;
+  location: string;
+  avail: string;
+  availColor: string;
 }> = [
   {
-    nameKey: 'doctor.ahmed.name',
-    specKey: 'doctors.cardiologist',
+    id: 2,
+    name: 'Dr. Khalid Al-Kuwari',
+    spec: 'Senior Cardiologist',
     img: '/images/doctor-1.png',
-    rating: 4.9,
-    reviews: 128,
-    locationKey: 'doctors.locationDubai',
-    availKey: 'doctors.availableToday',
+    rating: 4.8,
+    reviews: 214,
+    location: 'Hamad Heart Hospital, Al Rayyan',
+    avail: 'Available Tomorrow',
+    availColor: 'text-blue-600 bg-blue-50',
   },
   {
-    nameKey: 'doctor.fatima.name',
-    specKey: 'doctors.pediatrician',
+    id: 3,
+    name: 'Dr. Mariam Al-Thani',
+    spec: 'Consultant Pediatrician',
     img: '/images/doctor-2.png',
     rating: 5.0,
     reviews: 342,
-    locationKey: 'doctors.locationJumeirah',
-    availKey: 'doctors.availableTomorrow',
+    location: 'Al Ahli Hospital, Al Sadd',
+    avail: 'Available Today',
+    availColor: 'text-green-600 bg-green-50',
   },
   {
-    nameKey: 'doctor.tariq.name',
-    specKey: 'doctors.orthopedic',
+    id: 9,
+    name: 'Dr. Hassan Al-Ansari',
+    spec: 'Sports Medicine & Orthopaedic Surgeon',
     img: '/images/doctor-3.png',
-    rating: 4.8,
-    reviews: 89,
-    locationKey: 'doctors.locationRiyadh',
-    availKey: 'doctors.availableIn2',
+    rating: 4.7,
+    reviews: 112,
+    location: 'Aspetar Hospital, Aspire Zone',
+    avail: 'Available Tomorrow',
+    availColor: 'text-blue-600 bg-blue-50',
   },
 ];
 
 const STATS: Array<{ num: string; labelKey: I18nKey }> = [
-  { num: '1M+', labelKey: 'stats.patients' },
-  { num: '50K+', labelKey: 'stats.doctors' },
-  { num: '200+', labelKey: 'stats.specialties' },
+  { num: '10K+', labelKey: 'stats.patients' },
+  { num: '500+', labelKey: 'stats.doctors' },
+  { num: '30+', labelKey: 'stats.specialties' },
   { num: '24/7', labelKey: 'stats.booking' },
 ];
 
@@ -174,7 +182,10 @@ export default function HomePage() {
   }, []);
 
   const handleSearch = () => {
-    navigate('/doctors');
+    const params = new URLSearchParams();
+    if (condition) params.set('specialty', condition);
+    if (city) params.set('city', city);
+    navigate(`/search?${params.toString()}`);
   };
 
   return (
@@ -390,13 +401,13 @@ export default function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {DOCTORS.map((doc, i) => (
-              <div key={i} className="bg-card rounded-3xl overflow-hidden shadow-sm border border-border/60 hover:shadow-xl transition-shadow duration-300 flex flex-col">
+            {FEATURED_DOCTORS.map((doc) => (
+              <div key={doc.id} className="bg-card rounded-3xl overflow-hidden shadow-sm border border-border/60 hover:shadow-xl transition-shadow duration-300 flex flex-col">
                 <div className="p-6 flex gap-4 border-b border-border/40">
-                  <img src={doc.img} alt={t(doc.nameKey)} className="w-24 h-24 rounded-2xl object-cover border-2 border-background shadow-sm" />
+                  <img src={doc.img} alt={doc.name} className="w-24 h-24 rounded-2xl object-cover border-2 border-background shadow-sm" />
                   <div className="flex-1">
-                    <h3 className="font-bold text-lg leading-tight">{t(doc.nameKey)}</h3>
-                    <p className="text-primary font-medium text-sm mb-2">{t(doc.specKey)}</p>
+                    <h3 className="font-bold text-lg leading-tight">{doc.name}</h3>
+                    <p className="text-primary font-medium text-sm mb-2">{doc.spec}</p>
                     <div className="flex items-center gap-1 text-sm font-bold">
                       <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                       {doc.rating}{' '}
@@ -409,18 +420,18 @@ export default function HomePage() {
                   <div className="space-y-3 text-sm">
                     <div className="flex items-center gap-3 text-foreground/80">
                       <MapPin className="w-4 h-4 text-primary/60" />
-                      {t(doc.locationKey)}
+                      {doc.location}
                     </div>
                     <div className="flex items-center gap-3 text-foreground/80">
                       <Clock className="w-4 h-4 text-primary/60" />
-                      <span className="text-green-600 font-medium bg-green-100 px-2 py-0.5 rounded-md">
-                        {t(doc.availKey)}
+                      <span className={`font-medium px-2 py-0.5 rounded-md ${doc.availColor}`}>
+                        {doc.avail}
                       </span>
                     </div>
                   </div>
 
                   <button
-                    onClick={handleSearch}
+                    onClick={() => navigate(`/book/${doc.id}`)}
                     className="w-full mt-4 inline-flex items-center justify-center rounded-xl font-medium h-11 px-6 bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm transition-colors"
                   >
                     {t('doctors.book')}
@@ -527,61 +538,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-card border-t border-border pt-16 pb-8">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-16">
-            <div className="col-span-2 lg:col-span-2">
-              <div className="flex items-center gap-2 mb-6">
-                <div className="bg-primary text-primary-foreground p-1.5 rounded-lg">
-                  <Stethoscope className="w-5 h-5" />
-                </div>
-                <span className="font-serif text-xl font-bold text-primary tracking-tight">Tabiby</span>
-              </div>
-              <p className="text-muted-foreground text-sm max-w-xs mb-6">{t('footer.tagline')}</p>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-4">{t('footer.patients')}</h4>
-              <ul className="space-y-3 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-primary transition-colors">{t('footer.searchDoctors')}</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">{t('footer.specialties')}</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">{t('footer.insuranceInfo')}</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">{t('footer.readReviews')}</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-4">{t('footer.clinics')}</h4>
-              <ul className="space-y-3 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-primary transition-colors">{t('footer.listPractice')}</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">{t('footer.providerLogin')}</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">{t('footer.successStories')}</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">{t('footer.helpCenter')}</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-bold mb-4">Tabiby</h4>
-              <ul className="space-y-3 text-sm text-muted-foreground">
-                <li><a href="#" className="hover:text-primary transition-colors">{t('footer.about')}</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">{t('footer.careers')}</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">{t('footer.contact')}</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">{t('footer.press')}</a></li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-border pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-            <p>{t('footer.copy')}</p>
-            <div className="flex gap-4">
-              <a href="#" className="hover:text-primary transition-colors">{t('footer.terms')}</a>
-              <a href="#" className="hover:text-primary transition-colors">{t('footer.privacy')}</a>
-              <a href="#" className="hover:text-primary transition-colors">{t('footer.security')}</a>
-            </div>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
