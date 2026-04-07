@@ -12,7 +12,7 @@ const SPECIALTIES = [
 ];
 
 const CITIES = [
-  'Doha', 'Al Wakrah', 'Al Khor', 'Al Rayyan', 'Lusail', 'Al Wakrah', 'Mesaieed',
+  'Doha', 'Al Wakrah', 'Al Khor', 'Al Rayyan', 'Lusail', 'Mesaieed',
 ];
 
 const INSURANCE_OPTIONS = ['QLM', 'Al Koot', 'Cigna', 'Nextcare', 'MetLife', 'GIG Gulf', 'Bupa'];

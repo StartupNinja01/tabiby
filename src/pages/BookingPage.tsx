@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ChevronLeft, Check, Calendar, User, ClipboardCheck, Video, MapPin, Clock } from 'lucide-react';
+import { ChevronLeft, Check, Calendar, User, ClipboardCheck, Video, MapPin, Clock, Star } from 'lucide-react';
 import { getDoctorById } from '@/data/doctors';
 import { Calendar as CalendarPicker } from '@/components/ui/calendar';
 
