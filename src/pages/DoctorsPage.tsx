@@ -48,8 +48,8 @@ const DOCTORS: Doctor[] = [
     addrKey: 'search.zamalekAddr',
     distanceNum: '3.2',
     insuranceStatus: 'in',
-    insurance: 'Bupa Gold',
-    langKey: 'search.langArabicEnglishFrench',
+    insurance: 'QLM',
+    langKey: 'search.langArabicEnglishHindi',
     videoVisits: true,
     slotKeys: ['search.slot.todayPM', 'search.slot.tomorrowAM'],
     avatarBg: 'bg-teal-100 text-teal-800',
@@ -71,7 +71,7 @@ const DOCTORS: Doctor[] = [
     addrKey: 'search.maadiAddr',
     distanceNum: '8.5',
     insuranceStatus: 'in',
-    insurance: 'Bupa Gold',
+    insurance: 'Al Koot',
     langKey: 'search.langArabicEnglish',
     videoVisits: false,
     slotKeys: ['search.slot.tomorrowPM', 'search.slot.thuAM'],
@@ -94,8 +94,8 @@ const DOCTORS: Doctor[] = [
     addrKey: 'search.newCairoAddr',
     distanceNum: '12.1',
     insuranceStatus: 'out',
-    insurance: 'Bupa Gold',
-    langKey: 'search.langArabicEnglish',
+    insurance: 'Cigna',
+    langKey: 'search.langArabicEnglishHindi',
     videoVisits: true,
     slotKeys: ['search.slot.friAM', 'search.slot.satPM'],
     avatarBg: 'bg-pink-100 text-pink-800',
@@ -117,7 +117,7 @@ const DOCTORS: Doctor[] = [
     addrKey: 'search.dokkiAddr',
     distanceNum: '1.5',
     insuranceStatus: 'in',
-    insurance: 'Bupa Gold',
+    insurance: 'Bupa',
     langKey: 'search.langArabic',
     videoVisits: false,
     slotKeys: ['search.slot.todayEveningPM', 'search.slot.tomorrowLunchPM'],
@@ -149,10 +149,7 @@ function StarRating({ rating, max = 5 }: { rating: number; max?: number }) {
 
 export default function DoctorsPage() {
   const { t } = useI18n();
-  const doctors = DOCTORS.map((d) => ({
-    ...d,
-    insurance: t('search.insuranceBupaGold'),
-  }));
+  const doctors = DOCTORS;
   const [view, setView] = useState<'list' | 'map'>('list');
   const [sort, setSort] = useState<SortOption>('recommended');
   const [availableToday, setAvailableToday] = useState(false);
@@ -183,32 +180,72 @@ export default function DoctorsPage() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex-1 w-full flex items-center bg-white border border-slate-300 rounded-full shadow-sm px-2 py-1.5 focus-within:ring-2 focus-within:ring-teal-500 focus-within:border-teal-500 transition-all">
+            {/* Specialty dropdown */}
             <div className="flex-1 flex items-center border-r border-slate-200 px-3">
               <Search className="h-4 w-4 text-slate-400 mr-2 flex-shrink-0" />
-              <input
-                value={searchSpecialty || t('search.defaultSpecialty')}
+              <select
+                value={searchSpecialty}
                 onChange={(e) => setSearchSpecialty(e.target.value)}
-                className="border-0 bg-transparent outline-none px-0 h-8 font-medium text-slate-900 placeholder:text-slate-500 w-full"
-                placeholder={t('search.specialtyPlaceholder')}
-              />
+                className="border-0 bg-transparent outline-none px-0 h-8 font-medium text-slate-900 w-full appearance-none cursor-pointer"
+              >
+                <option value="">{t('search.allSpecialties')}</option>
+                <option value="primaryCare">{t('specialties.primaryCare')}</option>
+                <option value="ophthalmology">{t('specialties.ophthalmology')}</option>
+                <option value="cardiology">{t('specialties.cardiology')}</option>
+                <option value="pediatrics">{t('specialties.pediatrics')}</option>
+                <option value="dermatology">{t('specialties.dermatology')}</option>
+                <option value="psychiatry">{t('specialties.psychiatry')}</option>
+                <option value="orthopedics">{t('specialties.orthopedics')}</option>
+                <option value="dentistry">{t('specialties.dentistry')}</option>
+              </select>
             </div>
+            {/* City dropdown */}
             <div className="flex-1 flex items-center border-r border-slate-200 px-3 hidden sm:flex">
               <MapPin className="h-4 w-4 text-slate-400 mr-2 flex-shrink-0" />
-              <input
-                value={searchLocation || t('search.defaultLocation')}
+              <select
+                value={searchLocation}
                 onChange={(e) => setSearchLocation(e.target.value)}
-                className="border-0 bg-transparent outline-none px-0 h-8 font-medium text-slate-900 placeholder:text-slate-500 w-full"
-                placeholder={t('search.locationPlaceholder')}
-              />
+                className="border-0 bg-transparent outline-none px-0 h-8 font-medium text-slate-900 w-full appearance-none cursor-pointer"
+              >
+                <option value="">{t('search.allCities')}</option>
+                <option value="doha">{t('city.doha')}, Qatar</option>
+                <option value="westBay">{t('city.westBay')}</option>
+                <option value="alSadd">{t('city.alSadd')}</option>
+                <option value="msheireb">{t('city.msheireb')}</option>
+                <option value="alHilal">{t('city.alHilal')}</option>
+                <option value="oldAirport">{t('city.oldAirport')}</option>
+                <option value="alGharrafa">{t('city.alGharrafa')}</option>
+                <option value="pearl">{t('city.pearl')}</option>
+                <option value="lusail">{t('city.lusail')}</option>
+                <option value="alRayyan">{t('city.alRayyan')}</option>
+                <option value="alWakrah">{t('city.alWakrah')}</option>
+                <option value="alKhor">{t('city.alKhor')}</option>
+                <option value="muaither">{t('city.muaither')}</option>
+                <option value="umSalal">{t('city.umSalal')}</option>
+                <option value="alShahaniya">{t('city.alShahaniya')}</option>
+                <option value="mesaieed">{t('city.mesaieed')}</option>
+                <option value="dukhan">{t('city.dukhan')}</option>
+                <option value="abuSamra">{t('city.abuSamra')}</option>
+                <option value="madinat">{t('city.madinat')}</option>
+              </select>
             </div>
+            {/* Insurance dropdown */}
             <div className="flex-1 flex items-center px-3 hidden md:flex">
               <Shield className="h-4 w-4 text-slate-400 mr-2 flex-shrink-0" />
-              <input
-                value={searchInsurance || t('search.defaultInsurance')}
+              <select
+                value={searchInsurance}
                 onChange={(e) => setSearchInsurance(e.target.value)}
-                className="border-0 bg-transparent outline-none px-0 h-8 font-medium text-slate-900 placeholder:text-slate-500 w-full"
-                placeholder={t('search.insurancePlaceholder')}
-              />
+                className="border-0 bg-transparent outline-none px-0 h-8 font-medium text-slate-900 w-full appearance-none cursor-pointer"
+              >
+                <option value="">{t('search.allInsurance')}</option>
+                <option value="qlm">QLM</option>
+                <option value="alkoot">Al Koot</option>
+                <option value="cigna">Cigna</option>
+                <option value="nextcare">Nextcare</option>
+                <option value="metlife">MetLife</option>
+                <option value="gig">GIG Gulf</option>
+                <option value="bupa">Bupa</option>
+              </select>
             </div>
             <button className="rounded-full bg-teal-600 hover:bg-teal-700 h-10 w-10 flex-shrink-0 flex items-center justify-center transition-colors">
               <Search className="h-4 w-4 text-white" />
@@ -365,7 +402,7 @@ export default function DoctorsPage() {
                     {([
                       { id: 'lang-ar', labelKey: 'search.langArabic', defaultChecked: true },
                       { id: 'lang-en', labelKey: 'search.langEnglish', defaultChecked: true },
-                      { id: 'lang-fr', labelKey: 'search.langFrench', defaultChecked: false },
+                      { id: 'lang-hi', labelKey: 'search.langHindi', defaultChecked: false },
                     ] as const).map((item) => (
                       <label key={item.id} className="flex items-center gap-2 cursor-pointer">
                         <input
