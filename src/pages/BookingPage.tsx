@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { ChevronLeft, Check, Calendar, User, ClipboardCheck, Video, MapPin, Clock, Star } from 'lucide-react';
+import { ChevronLeft, Check, Calendar, User, ClipboardCheck, Video, MapPin, Clock, Star, CheckCircle2 } from 'lucide-react';
 import { getDoctorById } from '@/data/doctors';
 import { Calendar as CalendarPicker } from '@/components/ui/calendar';
-import { saveAppointment } from '@/lib/appointments';
+import { saveAppointment, getProfile } from '@/lib/appointments';
 
 type Step = 1 | 2 | 3;
 type AppointmentType = 'in-person' | 'video';
@@ -28,12 +28,14 @@ export default function BookingPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState('');
   const [appointmentType, setAppointmentType] = useState<AppointmentType>('in-person');
+  // Pre-fill from saved patient profile (if available)
+  const savedProfile = getProfile();
   const [form, setForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    dob: '',
+    firstName: savedProfile.firstName || '',
+    lastName:  savedProfile.lastName  || '',
+    email:     savedProfile.email     || '',
+    phone:     savedProfile.phone !== '+974 ' ? savedProfile.phone : '',
+    dob:       savedProfile.dob       || '',
     reason: '',
     notes: '',
   });
@@ -277,6 +279,13 @@ export default function BookingPage() {
             {step === 2 && (
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
                 <h2 className="text-xl font-bold text-slate-900 mb-2">Your Information</h2>
+                {savedProfile.firstName && (
+                  <div className="flex items-center gap-2 bg-teal-50 border border-teal-100 rounded-xl px-3 py-2 mb-4 text-xs text-teal-700 font-medium">
+                    <CheckCircle2 className="h-3.5 w-3.5 flex-shrink-0" />
+                    Pre-filled from your saved profile —{' '}
+                    <a href="/dashboard" className="underline hover:text-teal-900">edit in Dashboard</a>
+                  </div>
+                )}
                 <p className="text-slate-500 text-sm mb-6">We need a few details to complete your booking</p>
 
                 <div className="space-y-4">

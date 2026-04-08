@@ -77,6 +77,7 @@
   },
   "dependencies": {
     "leaflet": "^1.9.4",
+    "react-helmet-async": "^3.0.0",
     "react-router-dom": "^7.14.0"
   }
 }

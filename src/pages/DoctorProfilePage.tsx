@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { getDoctorById, DOCTORS, Doctor } from '@/data/doctors';
 import PageMeta, { doctorJsonLd } from '@/components/PageMeta';
+import ReviewsSection from '@/components/ReviewsSection';
 
 const MapView = lazy(() => import('@/components/MapView'));
 
@@ -295,6 +296,13 @@ export default function DoctorProfilePage() {
                 ))}
               </ul>
             </div>
+
+            {/* ── Patient Reviews ── */}
+            <ReviewsSection
+              reviews={doctor.writtenReviews}
+              averageRating={doctor.rating}
+              totalCount={doctor.reviews}
+            />
 
             {/* ── Location: Real Leaflet Map ── */}
             <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 sm:p-8">

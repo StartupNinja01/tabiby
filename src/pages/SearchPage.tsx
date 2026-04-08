@@ -18,8 +18,23 @@ import {
   Clock,
   X,
   SlidersHorizontal,
+  Navigation,
+  Loader2,
 } from 'lucide-react';
 import { DOCTORS, Doctor } from '@/data/doctors';
+
+// ─── Haversine distance (km) between two lat/lng pairs ───────────────────────
+function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 6371;
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLng / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
 
 const MapView = lazy(() => import('@/components/MapView'));
 
@@ -352,6 +367,32 @@ export default function SearchPage() {
   const [langEnglish, setLangEnglish] = useState(false);
   const [availWeek, setAvailWeek] = useState(false);
 
+  // Near Me geolocation
+  const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
+  const [geoLoading, setGeoLoading] = useState(false);
+  const [geoError, setGeoError] = useState('');
+
+  const handleNearMe = () => {
+    if (!navigator.geolocation) {
+      setGeoError('Geolocation is not supported by your browser.');
+      return;
+    }
+    setGeoLoading(true);
+    setGeoError('');
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setUserCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        setSort('distance');
+        setGeoLoading(false);
+      },
+      () => {
+        setGeoError('Unable to access your location. Please allow location access and try again.');
+        setGeoLoading(false);
+      },
+      { timeout: 8000 },
+    );
+  };
+
   // View & selection
   const [viewMode, setViewMode] = useState<ViewMode>('list');
   const [selectedDocId, setSelectedDocId] = useState<number | null>(null);
@@ -382,7 +423,15 @@ export default function SearchPage() {
     return true;
   }).sort((a, b) => {
     if (sort === 'rating') return b.rating - a.rating;
-    if (sort === 'distance') return parseFloat(a.distance) - parseFloat(b.distance);
+    if (sort === 'distance') {
+      if (userCoords) {
+        return (
+          haversineKm(userCoords.lat, userCoords.lng, a.lat, a.lng) -
+          haversineKm(userCoords.lat, userCoords.lng, b.lat, b.lng)
+        );
+      }
+      return parseFloat(a.distance) - parseFloat(b.distance);
+    }
     if (sort === 'price_asc') return a.fee - b.fee;
     if (sort === 'availability') {
       const aToday = a.availableSlots.some((s) => s.startsWith('Today')) ? 0 : 1;
@@ -704,6 +753,23 @@ export default function SearchPage() {
               )}
             </button>
 
+            {/* Near Me button */}
+            <button
+              onClick={handleNearMe}
+              disabled={geoLoading}
+              className={`inline-flex items-center gap-1.5 px-3 py-2 rounded-lg border text-sm font-semibold transition-colors flex-shrink-0 ${
+                userCoords
+                  ? 'bg-teal-50 border-teal-300 text-teal-700'
+                  : 'bg-white border-slate-200 text-slate-600 hover:border-teal-300 hover:text-teal-700'
+              } disabled:opacity-60`}
+              title="Sort by your current location"
+            >
+              {geoLoading
+                ? <Loader2 className="h-4 w-4 animate-spin" />
+                : <Navigation className="h-4 w-4" />}
+              <span className="hidden sm:inline">{userCoords ? 'Near Me ✓' : 'Near Me'}</span>
+            </button>
+
             {/* Sort */}
             <div className="flex items-center gap-2 flex-1 sm:flex-initial">
               <span className="text-sm font-medium text-slate-500 whitespace-nowrap hidden sm:block">
@@ -724,6 +790,13 @@ export default function SearchPage() {
                 <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
               </div>
             </div>
+
+            {/* Geolocation error toast */}
+            {geoError && (
+              <div className="absolute top-full mt-2 left-0 right-0 bg-red-50 border border-red-200 text-red-700 text-xs font-medium px-3 py-2 rounded-lg z-10">
+                {geoError}
+              </div>
+            )}
           </div>
         </div>
 

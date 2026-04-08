@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Disallow internal flows (no indexing value)
+Disallow: /login
+Disallow: /signup
+Disallow: /dashboard
+Disallow: /confirmation
+Disallow: /book/
+
+# Sitemap
+Sitemap: https://tabiby.co/sitemap.xml
