@@ -27,6 +27,8 @@ export interface Doctor {
   fee: number;
   availableSlots: string[];
   avatarBg: string;
+  lat: number;
+  lng: number;
 }
 
 export const DOCTORS: Doctor[] = [
@@ -63,6 +65,8 @@ export const DOCTORS: Doctor[] = [
     fee: 350,
     availableSlots: ['Today, 3:00 PM', 'Today, 5:30 PM', 'Tomorrow, 9:00 AM', 'Tomorrow, 11:30 AM', 'Thu, 2:00 PM'],
     avatarBg: 'bg-teal-100 text-teal-800',
+    lat: 25.3168,
+    lng: 51.4372,
   },
   {
     id: 2,
@@ -97,6 +101,8 @@ export const DOCTORS: Doctor[] = [
     fee: 450,
     availableSlots: ['Tomorrow, 10:00 AM', 'Tomorrow, 2:30 PM', 'Thu, 9:00 AM', 'Thu, 1:00 PM', 'Fri, 11:00 AM'],
     avatarBg: 'bg-blue-100 text-blue-800',
+    lat: 25.2841,
+    lng: 51.4183,
   },
   {
     id: 3,
@@ -131,6 +137,8 @@ export const DOCTORS: Doctor[] = [
     fee: 380,
     availableSlots: ['Today, 4:00 PM', 'Tomorrow, 8:30 AM', 'Tomorrow, 1:00 PM', 'Thu, 10:00 AM', 'Fri, 3:00 PM'],
     avatarBg: 'bg-pink-100 text-pink-800',
+    lat: 25.2820,
+    lng: 51.5091,
   },
   {
     id: 4,
@@ -165,6 +173,8 @@ export const DOCTORS: Doctor[] = [
     fee: 400,
     availableSlots: ['Tomorrow, 11:00 AM', 'Tomorrow, 3:30 PM', 'Thu, 2:00 PM', 'Sat, 10:00 AM', 'Sat, 12:00 PM'],
     avatarBg: 'bg-pink-100 text-pink-800',
+    lat: 25.3335,
+    lng: 51.5298,
   },
   {
     id: 5,
@@ -199,6 +209,8 @@ export const DOCTORS: Doctor[] = [
     fee: 200,
     availableSlots: ['Today, 2:00 PM', 'Today, 4:30 PM', 'Tomorrow, 9:00 AM', 'Tomorrow, 11:00 AM', 'Thu, 4:00 PM'],
     avatarBg: 'bg-slate-100 text-slate-800',
+    lat: 25.2682,
+    lng: 51.5265,
   },
   {
     id: 6,
@@ -233,6 +245,8 @@ export const DOCTORS: Doctor[] = [
     fee: 500,
     availableSlots: ['Thu, 10:00 AM', 'Thu, 2:00 PM', 'Sun, 9:00 AM', 'Sun, 11:30 AM'],
     avatarBg: 'bg-purple-100 text-purple-800',
+    lat: 25.3172,
+    lng: 51.4358,
   },
   {
     id: 7,
@@ -267,6 +281,8 @@ export const DOCTORS: Doctor[] = [
     fee: 420,
     availableSlots: ['Tomorrow, 9:30 AM', 'Tomorrow, 1:00 PM', 'Wed, 10:00 AM', 'Fri, 2:00 PM'],
     avatarBg: 'bg-indigo-100 text-indigo-800',
+    lat: 25.3328,
+    lng: 51.5324,
   },
   {
     id: 8,
@@ -301,6 +317,8 @@ export const DOCTORS: Doctor[] = [
     fee: 500,
     availableSlots: ['Wed, 11:00 AM', 'Wed, 3:00 PM', 'Thu, 9:00 AM', 'Sat, 10:30 AM'],
     avatarBg: 'bg-orange-100 text-orange-800',
+    lat: 25.3155,
+    lng: 51.4380,
   },
   {
     id: 9,
@@ -335,6 +353,8 @@ export const DOCTORS: Doctor[] = [
     fee: 480,
     availableSlots: ['Tomorrow, 8:00 AM', 'Tomorrow, 11:00 AM', 'Thu, 3:00 PM', 'Sat, 9:00 AM'],
     avatarBg: 'bg-green-100 text-green-800',
+    lat: 25.2631,
+    lng: 51.4512,
   },
   {
     id: 10,
@@ -369,6 +389,8 @@ export const DOCTORS: Doctor[] = [
     fee: 400,
     availableSlots: ['Today, 6:00 PM', 'Tomorrow, 12:00 PM', 'Wed, 10:00 AM', 'Fri, 4:00 PM'],
     avatarBg: 'bg-violet-100 text-violet-800',
+    lat: 25.2869,
+    lng: 51.5336,
   },
   {
     id: 11,
@@ -403,6 +425,8 @@ export const DOCTORS: Doctor[] = [
     fee: 500,
     availableSlots: ['Wed, 9:00 AM', 'Wed, 2:00 PM', 'Thu, 11:00 AM', 'Sun, 9:30 AM'],
     avatarBg: 'bg-cyan-100 text-cyan-800',
+    lat: 25.2847,
+    lng: 51.4162,
   },
   {
     id: 12,
@@ -437,6 +461,8 @@ export const DOCTORS: Doctor[] = [
     fee: 300,
     availableSlots: ['Today, 3:30 PM', 'Today, 5:00 PM', 'Tomorrow, 10:00 AM', 'Thu, 2:30 PM', 'Sat, 11:00 AM'],
     avatarBg: 'bg-rose-100 text-rose-800',
+    lat: 25.3718,
+    lng: 51.5528,
   },
 ];
 
