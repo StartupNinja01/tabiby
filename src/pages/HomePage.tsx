@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import {
   Search, MapPin, Calendar, Star, ChevronRight, Stethoscope,
   HeartPulse, Baby, Brain, Eye, Bone, ShieldCheck, Clock,
-  Smartphone, User, ChevronDown
+  Smartphone, User, ChevronDown, Video, CheckCircle2, ArrowRight,
 } from 'lucide-react';
 import { useI18n, I18nKey } from '@/lib/i18n';
+import { DOCTORS } from '@/data/doctors';
 
 const ROTATING_KEYS: I18nKey[] = [
   'hero.specialty.doctors',
@@ -162,6 +163,162 @@ const INSURANCE_LOGOS: Array<{ nameKey: I18nKey; src: string }> = [
   },
 ];
 
+// ─── Available Today Section ─────────────────────────────────────────────────
+
+function AvailableTodaySection({ onNavigate }: { onNavigate: ReturnType<typeof useNavigate> }) {
+  const todayDoctors = DOCTORS.filter((d) =>
+    d.availableSlots.some((s) => s.startsWith('Today')),
+  );
+
+  if (todayDoctors.length === 0) return null;
+
+  return (
+    <section className="py-14 bg-white border-b border-slate-100">
+      <div className="container mx-auto px-4 md:px-6">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              {/* Pulsing green dot */}
+              <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500" />
+              </span>
+              <span className="text-green-600 font-bold text-sm uppercase tracking-wider">Live Availability</span>
+            </div>
+            <div className="w-px h-5 bg-slate-200" />
+            <h2 className="font-serif text-2xl md:text-3xl font-bold text-slate-900">
+              Available Today in Doha
+            </h2>
+          </div>
+          <button
+            onClick={() => onNavigate('/search?today=true')}
+            className="hidden sm:flex items-center gap-1.5 text-sm font-bold text-teal-600 hover:text-teal-700 transition-colors"
+          >
+            See all <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
+
+        {/* Scrollable cards */}
+        <div className="flex gap-5 overflow-x-auto pb-4 -mx-4 px-4 sm:-mx-0 sm:px-0 scrollbar-none">
+          {todayDoctors.map((doc) => {
+            const todaySlots = doc.availableSlots.filter((s) => s.startsWith('Today'));
+            return (
+              <div
+                key={doc.id}
+                className="bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-lg hover:border-teal-200 transition-all flex flex-col flex-shrink-0 w-[260px] overflow-hidden group"
+              >
+                {/* Top accent */}
+                <div className="h-1 bg-gradient-to-r from-green-400 to-teal-500" />
+
+                <div className="p-5 flex flex-col gap-4 flex-1">
+                  {/* Doctor info */}
+                  <div className="flex items-start gap-3">
+                    <div
+                      className={`h-16 w-16 rounded-xl overflow-hidden flex items-center justify-center font-bold text-xl border-2 border-slate-50 shadow-sm flex-shrink-0 ${doc.avatarBg}`}
+                    >
+                      {doc.img ? (
+                        <img src={doc.img} alt={doc.name} className="w-full h-full object-cover" />
+                      ) : (
+                        doc.initials
+                      )}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="font-bold text-slate-900 text-sm leading-tight line-clamp-1">
+                        {doc.name}
+                      </p>
+                      <p className="text-teal-700 text-xs font-semibold mt-0.5">{doc.specialty}</p>
+                      <div className="flex items-center gap-1 mt-1">
+                        <Star className="h-3.5 w-3.5 fill-amber-400 text-amber-400" />
+                        <span className="text-xs font-bold text-slate-700">{doc.rating}</span>
+                        <span className="text-xs text-slate-400">({doc.reviews})</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Badges row */}
+                  <div className="flex flex-wrap gap-1.5">
+                    {doc.verified && (
+                      <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-blue-100">
+                        <CheckCircle2 className="h-2.5 w-2.5" /> QCHP
+                      </span>
+                    )}
+                    {doc.videoVisits && (
+                      <span className="inline-flex items-center gap-1 bg-purple-50 text-purple-700 text-[10px] font-bold px-2 py-0.5 rounded-full border border-purple-100">
+                        <Video className="h-2.5 w-2.5" /> Video
+                      </span>
+                    )}
+                    <span className="inline-flex items-center gap-1 bg-slate-100 text-slate-600 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                      <MapPin className="h-2.5 w-2.5" /> {doc.district}
+                    </span>
+                  </div>
+
+                  {/* Today's slots */}
+                  <div className="space-y-1.5">
+                    <p className="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
+                      <Clock className="h-3 w-3 text-green-500" /> Today's slots
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {todaySlots.slice(0, 3).map((slot, i) => (
+                        <button
+                          key={i}
+                          onClick={() => onNavigate(`/book/${doc.id}`)}
+                          className="bg-green-50 hover:bg-green-100 text-green-800 border border-green-200 text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors"
+                        >
+                          {slot.replace('Today, ', '')}
+                        </button>
+                      ))}
+                      {todaySlots.length === 0 && (
+                        <span className="text-xs text-slate-400 italic">No slots remaining</span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Fee */}
+                  <p className="text-xs text-slate-400 font-medium">
+                    QAR {doc.fee} consultation · {doc.insuranceStatus === 'in' ? '✓ In-Network' : 'Out-of-Network'}
+                  </p>
+
+                  {/* CTA */}
+                  <button
+                    onClick={() => onNavigate(`/book/${doc.id}`)}
+                    className="w-full mt-auto bg-teal-600 hover:bg-teal-700 active:bg-teal-800 text-white font-bold py-3 rounded-xl text-sm transition-colors shadow-sm group-hover:shadow-md"
+                  >
+                    Book Now
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+
+          {/* "See more" card */}
+          <button
+            onClick={() => onNavigate('/search')}
+            className="flex-shrink-0 w-[200px] border-2 border-dashed border-teal-200 rounded-2xl flex flex-col items-center justify-center gap-3 p-6 hover:border-teal-400 hover:bg-teal-50 transition-all text-teal-600 group"
+          >
+            <div className="h-12 w-12 rounded-full bg-teal-50 group-hover:bg-teal-100 flex items-center justify-center transition-colors">
+              <ArrowRight className="h-5 w-5" />
+            </div>
+            <p className="font-bold text-sm text-center">Browse all available doctors</p>
+          </button>
+        </div>
+
+        {/* Mobile "see all" link */}
+        <div className="mt-5 text-center sm:hidden">
+          <button
+            onClick={() => onNavigate('/search')}
+            className="text-sm font-bold text-teal-600 hover:text-teal-700"
+          >
+            See all available doctors →
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// ─── Main Page ────────────────────────────────────────────────────────────────
+
 export default function HomePage() {
   const { t } = useI18n();
   const navigate = useNavigate();
@@ -297,6 +454,9 @@ export default function HomePage() {
         {/* Background Decoration */}
         <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-[800px] h-[800px] bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
       </section>
+
+      {/* ── Available Today Strip ── */}
+      <AvailableTodaySection onNavigate={navigate} />
 
       {/* Insurance Section */}
       <section className="border-y border-border/40 bg-secondary/30 py-12">
