@@ -351,21 +351,48 @@ function DoctorCard({ doc, highlighted, onHighlight, compact = false }: DoctorCa
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
 export default function SearchPage() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // Filters
-  const [sort, setSort] = useState<SortOption>('recommended');
-  const [availableToday, setAvailableToday] = useState(false);
-  const [newPatientsOnly, setNewPatientsOnly] = useState(false);
-  const [videoOnly, setVideoOnly] = useState(false);
-  const [topRatedOnly, setTopRatedOnly] = useState(false);
-  const [gender, setGender] = useState('any');
-  const [searchSpecialty, setSearchSpecialty] = useState(searchParams.get('specialty') || '');
-  const [searchLocation, setSearchLocation] = useState(searchParams.get('city') || '');
-  const [searchInsurance, setSearchInsurance] = useState('');
-  const [langArabic, setLangArabic] = useState(false);
-  const [langEnglish, setLangEnglish] = useState(false);
-  const [availWeek, setAvailWeek] = useState(false);
+  // ── All filters derived from URL params (fully shareable + back-button safe) ──
+  const searchSpecialty  = searchParams.get('specialty')  || '';
+  const searchLocation   = searchParams.get('city')       || '';
+  const searchInsurance  = searchParams.get('insurance')  || '';
+  const sort             = (searchParams.get('sort')      || 'recommended') as SortOption;
+  const gender           = searchParams.get('gender')     || 'any';
+  const availableToday   = searchParams.get('today')      === '1';
+  const newPatientsOnly  = searchParams.get('new')        === '1';
+  const videoOnly        = searchParams.get('video')      === '1';
+  const topRatedOnly     = searchParams.get('top')        === '1';
+  const langArabic       = searchParams.get('ar')         === '1';
+  const langEnglish      = searchParams.get('en')         === '1';
+  const availWeek        = searchParams.get('week')       === '1';
+
+  // Helper: update one param while preserving the rest
+  const setParam = (key: string, value: string | null) => {
+    setSearchParams((prev) => {
+      const next = new URLSearchParams(prev);
+      if (value === null || value === '' || value === 'recommended' || value === 'any' || value === '0') {
+        next.delete(key);
+      } else {
+        next.set(key, value);
+      }
+      return next;
+    }, { replace: true });
+  };
+
+  // Typed setters that mirror the old state-setter API so the rest of the JSX stays identical
+  const setSearchSpecialty  = (v: string) => setParam('specialty', v);
+  const setSearchLocation   = (v: string) => setParam('city',      v);
+  const setSearchInsurance  = (v: string) => setParam('insurance', v);
+  const setSort             = (v: SortOption) => setParam('sort',  v);
+  const setGender           = (v: string) => setParam('gender',    v);
+  const setAvailableToday   = (v: boolean) => setParam('today',    v ? '1' : null);
+  const setNewPatientsOnly  = (v: boolean) => setParam('new',      v ? '1' : null);
+  const setVideoOnly        = (v: boolean) => setParam('video',    v ? '1' : null);
+  const setTopRatedOnly     = (v: boolean) => setParam('top',      v ? '1' : null);
+  const setLangArabic       = (v: boolean) => setParam('ar',       v ? '1' : null);
+  const setLangEnglish      = (v: boolean) => setParam('en',       v ? '1' : null);
+  const setAvailWeek        = (v: boolean) => setParam('week',     v ? '1' : null);
 
   // Near Me geolocation
   const [userCoords, setUserCoords] = useState<{ lat: number; lng: number } | null>(null);
@@ -398,10 +425,7 @@ export default function SearchPage() {
   const [selectedDocId, setSelectedDocId] = useState<number | null>(null);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  useEffect(() => {
-    setSearchSpecialty(searchParams.get('specialty') || '');
-    setSearchLocation(searchParams.get('city') || '');
-  }, [searchParams]);
+  // (Filters are now derived directly from searchParams — no sync effect needed)
 
   // Filtered + sorted doctors
   const filteredDoctors: Doctor[] = DOCTORS.filter((doc) => {
@@ -460,18 +484,7 @@ export default function SearchPage() {
   ].filter(Boolean).length;
 
   const clearAllFilters = () => {
-    setSearchSpecialty('');
-    setSearchLocation('');
-    setSearchInsurance('');
-    setVideoOnly(false);
-    setNewPatientsOnly(false);
-    setAvailableToday(false);
-    setTopRatedOnly(false);
-    setGender('any');
-    setLangArabic(false);
-    setLangEnglish(false);
-    setAvailWeek(false);
-    setSort('recommended');
+    setSearchParams({}, { replace: true });
   };
 
   const NAVBAR_HEIGHT = 80;
