@@ -18,6 +18,7 @@ import PrivacyPage from '@/pages/PrivacyPage';
 import SecurityPage from '@/pages/SecurityPage';
 import LoginPage from '@/pages/LoginPage';
 import SignupPage from '@/pages/SignupPage';
+import DashboardPage from '@/pages/DashboardPage';
 import NotFound from '@/pages/not-found';
 
 const queryClient = new QueryClient();
@@ -53,6 +54,7 @@ function Layout() {
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/for-providers" element={<ForProvidersPage />} />
                   <Route path="/help" element={<HelpPage />} />
+                  <Route path="/dashboard" element={<DashboardPage />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>

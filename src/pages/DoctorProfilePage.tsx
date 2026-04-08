@@ -6,6 +6,7 @@ import {
   Navigation, UserPlus, ExternalLink,
 } from 'lucide-react';
 import { getDoctorById, DOCTORS, Doctor } from '@/data/doctors';
+import PageMeta, { doctorJsonLd } from '@/components/PageMeta';
 
 const MapView = lazy(() => import('@/components/MapView'));
 
@@ -148,6 +149,13 @@ export default function DoctorProfilePage() {
 
   return (
     <div className="min-h-screen bg-slate-50">
+      <PageMeta
+        title={`${doctor.name} — ${doctor.specialty} in ${doctor.city} | Tabiby`}
+        description={`Book an appointment with ${doctor.name}, ${doctor.title} at ${doctor.clinic}, ${doctor.city}. Rated ${doctor.rating}/5 by ${doctor.reviews} patients. ${doctor.acceptedInsurance.join(', ')} accepted.`}
+        canonical={`https://tabiby.co/doctor/${doctor.id}`}
+        jsonLd={doctorJsonLd(doctor)}
+      />
+
       {/* Breadcrumb */}
       <div className="bg-white border-b border-slate-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-3">

@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { ChevronLeft, Check, Calendar, User, ClipboardCheck, Video, MapPin, Clock, Star } from 'lucide-react';
 import { getDoctorById } from '@/data/doctors';
 import { Calendar as CalendarPicker } from '@/components/ui/calendar';
+import { saveAppointment } from '@/lib/appointments';
 
 type Step = 1 | 2 | 3;
 type AppointmentType = 'in-person' | 'video';
@@ -77,10 +78,36 @@ export default function BookingPage() {
   };
 
   const handleConfirm = () => {
+    const dateStr = selectedDate?.toLocaleDateString('en-QA', {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+    }) ?? '';
+
+    // Persist to localStorage so the Dashboard can read it
+    saveAppointment({
+      doctorId: doctor.id,
+      doctorName: doctor.name,
+      doctorSpecialty: doctor.specialty,
+      doctorClinic: doctor.clinic,
+      doctorAddress: doctor.address,
+      doctorCity: doctor.city,
+      doctorImg: doctor.img,
+      doctorInitials: doctor.initials,
+      doctorAvatarBg: doctor.avatarBg,
+      date: dateStr,
+      time: selectedTime,
+      type: appointmentType,
+      patientFirstName: form.firstName,
+      patientLastName: form.lastName,
+      patientEmail: form.email,
+      patientPhone: form.phone,
+      reason: form.reason || undefined,
+      status: 'upcoming',
+    });
+
     navigate('/confirmation', {
       state: {
         doctor,
-        date: selectedDate?.toLocaleDateString('en-QA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }),
+        date: dateStr,
         time: selectedTime,
         type: appointmentType,
         patient: form,

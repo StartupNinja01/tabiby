@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useI18n, I18nKey } from '@/lib/i18n';
 import { DOCTORS } from '@/data/doctors';
+import PageMeta, { homeJsonLd } from '@/components/PageMeta';
 
 const ROTATING_KEYS: I18nKey[] = [
   'hero.specialty.doctors',
@@ -347,6 +348,12 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-background font-sans text-foreground selection:bg-primary/20">
+      <PageMeta
+        title="Tabiby — Find &amp; Book Top Doctors in Qatar"
+        description="Book appointments with top-rated doctors and specialists in Doha, Qatar. Filter by specialty, insurance, location, and language. Instant online booking, 24/7."
+        canonical="https://tabiby.co/"
+        jsonLd={homeJsonLd()}
+      />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-12 pb-20 lg:pt-24 lg:pb-32">
