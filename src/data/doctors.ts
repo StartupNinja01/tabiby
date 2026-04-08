@@ -1,3 +1,14 @@
+export interface Review {
+  id: string;
+  authorName: string;
+  authorInitials: string;
+  rating: number;       // 1–5
+  date: string;         // e.g. "March 2025"
+  text: string;
+  verified: boolean;    // "Verified Patient" badge
+  helpful: number;      // how many found this helpful
+}
+
 export interface Doctor {
   id: number;
   name: string;
@@ -7,6 +18,7 @@ export interface Doctor {
   img: string;
   rating: number;
   reviews: number;
+  writtenReviews: Review[];
   badge?: string;
   badgeColor?: string;
   verified: boolean;
@@ -27,6 +39,8 @@ export interface Doctor {
   fee: number;
   availableSlots: string[];
   avatarBg: string;
+  lat: number;
+  lng: number;
 }
 
 export const DOCTORS: Doctor[] = [
@@ -63,6 +77,14 @@ export const DOCTORS: Doctor[] = [
     fee: 350,
     availableSlots: ['Today, 3:00 PM', 'Today, 5:30 PM', 'Tomorrow, 9:00 AM', 'Tomorrow, 11:30 AM', 'Thu, 2:00 PM'],
     avatarBg: 'bg-teal-100 text-teal-800',
+    lat: 25.3168,
+    lng: 51.4372,
+    writtenReviews: [
+      { id: 'r1-1', authorName: 'Noor Al-Emadi', authorInitials: 'NA', rating: 5, date: 'February 2025', verified: true, helpful: 14, text: 'Dr. Layla is exceptional. I had struggled with chronic acne for years and within two visits she had a clear plan that actually worked. She takes time to explain every step and never rushes you. Highly recommend to anyone in Doha.' },
+      { id: 'r1-2', authorName: 'Priya Sharma', authorInitials: 'PS', rating: 5, date: 'January 2025', verified: true, helpful: 9, text: 'Best dermatologist I have seen in Qatar. The clinic is spotless, the staff are welcoming, and Dr. Hassan really listens. My eczema is finally under control after her treatment plan.' },
+      { id: 'r1-3', authorName: 'Mohammed Al-Kuwari', authorInitials: 'MK', rating: 4, date: 'December 2024', verified: true, helpful: 6, text: 'Very knowledgeable and professional. The wait time was a bit long but once you are in the consultation room she gives you her full attention. Good experience overall.' },
+      { id: 'r1-4', authorName: 'Sara Jaber', authorInitials: 'SJ', rating: 5, date: 'November 2024', verified: false, helpful: 4, text: 'I came from Lusail specifically to see Dr. Layla — absolutely worth it. She spotted something my previous doctor had missed entirely. Reassuring and thorough.' },
+    ],
   },
   {
     id: 2,
@@ -97,6 +119,14 @@ export const DOCTORS: Doctor[] = [
     fee: 450,
     availableSlots: ['Tomorrow, 10:00 AM', 'Tomorrow, 2:30 PM', 'Thu, 9:00 AM', 'Thu, 1:00 PM', 'Fri, 11:00 AM'],
     avatarBg: 'bg-blue-100 text-blue-800',
+    lat: 25.2841,
+    lng: 51.4183,
+    writtenReviews: [
+      { id: 'r2-1', authorName: 'Abdulrahman Al-Thani', authorInitials: 'AT', rating: 5, date: 'March 2025', verified: true, helpful: 22, text: 'Dr. Khalid saved my father\'s life. After a scary episode of chest pain, he was calm, methodical, and absolutely clear in his diagnosis. We are grateful every day. There is no better cardiologist in Doha.' },
+      { id: 'r2-2', authorName: 'Rania Mahmoud', authorInitials: 'RM', rating: 5, date: 'February 2025', verified: true, helpful: 17, text: 'Excellent doctor and a true professional. He reviewed my echocardiogram results in detail and explained everything in plain language. Reassured me greatly and gave a very clear treatment plan.' },
+      { id: 'r2-3', authorName: 'James O\'Brien', authorInitials: 'JO', rating: 4, date: 'January 2025', verified: true, helpful: 8, text: 'Very thorough consultation. As an expat I was nervous but Dr. Al-Kuwari spoke perfect English and put me at ease immediately. The hospital itself is world-class.' },
+      { id: 'r2-4', authorName: 'Fatima Saleh', authorInitials: 'FS', rating: 5, date: 'December 2024', verified: true, helpful: 11, text: 'My husband has been a patient for 3 years and the continuity of care is remarkable. Dr. Khalid remembers everything about his case without needing to re-read notes.' },
+    ],
   },
   {
     id: 3,
@@ -131,6 +161,15 @@ export const DOCTORS: Doctor[] = [
     fee: 380,
     availableSlots: ['Today, 4:00 PM', 'Tomorrow, 8:30 AM', 'Tomorrow, 1:00 PM', 'Thu, 10:00 AM', 'Fri, 3:00 PM'],
     avatarBg: 'bg-pink-100 text-pink-800',
+    lat: 25.2820,
+    lng: 51.5091,
+    writtenReviews: [
+      { id: 'r3-1', authorName: 'Hessa Al-Mannai', authorInitials: 'HM', rating: 5, date: 'March 2025', verified: true, helpful: 31, text: 'Dr. Mariam is simply the best. My two children have been her patients since birth and I could not imagine trusting anyone else. She is so gentle and patient with them — they actually look forward to their check-ups!' },
+      { id: 'r3-2', authorName: 'Deepa Nair', authorInitials: 'DN', rating: 5, date: 'February 2025', verified: true, helpful: 19, text: 'Five stars is not enough. Dr. Al-Thani diagnosed a rare condition in my son that two other doctors had missed. Her knowledge and compassion are unmatched in Qatar.' },
+      { id: 'r3-3', authorName: 'Omar Hassan', authorInitials: 'OH', rating: 5, date: 'January 2025', verified: true, helpful: 13, text: 'We moved to Qatar 2 years ago and finding Dr. Mariam was such a relief. She is thorough, up-to-date on the latest research, and always available for follow-up questions.' },
+      { id: 'r3-4', authorName: 'Lisa Chen', authorInitials: 'LC', rating: 4, date: 'December 2024', verified: false, helpful: 7, text: 'Wonderful doctor. The clinic can get busy but the quality of care is worth the wait. She never makes you feel rushed and answers every question with patience.' },
+      { id: 'r3-5', authorName: 'Amal Al-Sulaiti', authorInitials: 'AS', rating: 5, date: 'November 2024', verified: true, helpful: 10, text: 'My daughter was admitted with a high fever and Dr. Mariam was incredible under pressure — calm, decisive, and reassuring. She explained everything to us clearly. Forever grateful.' },
+    ],
   },
   {
     id: 4,
@@ -165,6 +204,13 @@ export const DOCTORS: Doctor[] = [
     fee: 400,
     availableSlots: ['Tomorrow, 11:00 AM', 'Tomorrow, 3:30 PM', 'Thu, 2:00 PM', 'Sat, 10:00 AM', 'Sat, 12:00 PM'],
     avatarBg: 'bg-pink-100 text-pink-800',
+    lat: 25.3335,
+    lng: 51.5298,
+    writtenReviews: [
+      { id: 'r4-1', authorName: 'Layla Abdullah', authorInitials: 'LA', rating: 5, date: 'February 2025', verified: true, helpful: 16, text: 'Dr. Yasmine completely transformed my skin. After years of trying different products and treatments, her personalised approach made all the difference. The West Bay clinic is also gorgeous.' },
+      { id: 'r4-2', authorName: 'Sunita Rao', authorInitials: 'SR', rating: 5, date: 'January 2025', verified: true, helpful: 12, text: 'Absolutely brilliant dermatologist. She explained every ingredient in the treatment plan and was very transparent about what to expect. Natural-looking results, no over-treatment.' },
+      { id: 'r4-3', authorName: 'Catherine Murphy', authorInitials: 'CM', rating: 4, date: 'December 2024', verified: true, helpful: 5, text: 'Great expertise and a very modern clinic. The fee is on the higher side but you get what you pay for. I saw results within three weeks of following her plan.' },
+    ],
   },
   {
     id: 5,
@@ -199,6 +245,13 @@ export const DOCTORS: Doctor[] = [
     fee: 200,
     availableSlots: ['Today, 2:00 PM', 'Today, 4:30 PM', 'Tomorrow, 9:00 AM', 'Tomorrow, 11:00 AM', 'Thu, 4:00 PM'],
     avatarBg: 'bg-slate-100 text-slate-800',
+    lat: 25.2682,
+    lng: 51.5265,
+    writtenReviews: [
+      { id: 'r5-1', authorName: 'Khaled Al-Hajri', authorInitials: 'KH', rating: 5, date: 'March 2025', verified: true, helpful: 8, text: 'Dr. Omar is exactly what you want in a family doctor — knowledgeable, kind, and never makes you feel rushed. He has been managing my diabetes for two years now and my HbA1c has improved dramatically.' },
+      { id: 'r5-2', authorName: 'Meera Pillai', authorInitials: 'MP', rating: 4, date: 'January 2025', verified: true, helpful: 6, text: 'Very good GP, always available and responsive. The video consultation option is brilliant for follow-ups. Reasonable fee for the quality of care.' },
+      { id: 'r5-3', authorName: 'David Williams', authorInitials: 'DW', rating: 4, date: 'December 2024', verified: true, helpful: 4, text: 'Solid, competent GP. Good English, friendly staff, easy to book. Does not over-prescribe which I really appreciate.' },
+    ],
   },
   {
     id: 6,
@@ -233,6 +286,13 @@ export const DOCTORS: Doctor[] = [
     fee: 500,
     availableSlots: ['Thu, 10:00 AM', 'Thu, 2:00 PM', 'Sun, 9:00 AM', 'Sun, 11:30 AM'],
     avatarBg: 'bg-purple-100 text-purple-800',
+    lat: 25.3172,
+    lng: 51.4358,
+    writtenReviews: [
+      { id: 'r6-1', authorName: 'Moza Al-Attiyah', authorInitials: 'MA', rating: 5, date: 'February 2025', verified: true, helpful: 20, text: 'I am so grateful for Dr. Aisha. She guided me through a high-risk pregnancy with skill and calm that I can never repay. My baby was born healthy and I owe that entirely to her exceptional care.' },
+      { id: 'r6-2', authorName: 'Rana Khoury', authorInitials: 'RK', rating: 5, date: 'January 2025', verified: true, helpful: 15, text: 'The most thorough and empathetic OB/GYN I have ever seen. She respects your time, explains everything, and genuinely cares. Sidra Medicine is lucky to have her.' },
+      { id: 'r6-3', authorName: 'Sheikha Hamad', authorInitials: 'SH', rating: 5, date: 'November 2024', verified: true, helpful: 11, text: 'Dr. Al-Mansoori performed my minimally invasive surgery with incredible precision. Recovery was faster than expected and she checked in personally the day after. Truly world-class.' },
+    ],
   },
   {
     id: 7,
@@ -267,6 +327,13 @@ export const DOCTORS: Doctor[] = [
     fee: 420,
     availableSlots: ['Tomorrow, 9:30 AM', 'Tomorrow, 1:00 PM', 'Wed, 10:00 AM', 'Fri, 2:00 PM'],
     avatarBg: 'bg-indigo-100 text-indigo-800',
+    lat: 25.3328,
+    lng: 51.5324,
+    writtenReviews: [
+      { id: 'r7-1', authorName: 'Pierre Dubois', authorInitials: 'PD', rating: 5, date: 'February 2025', verified: true, helpful: 9, text: 'Dr. Al-Fayed is a rarity — a cardiologist who is equally fluent in English and French and who brings world-class Parisian training to Doha. His preventive approach kept me off medication I was certain I needed.' },
+      { id: 'r7-2', authorName: 'Ali Hassan', authorInitials: 'AH', rating: 5, date: 'December 2024', verified: true, helpful: 7, text: 'Very impressive specialist. He ordered exactly the right tests and gave a thorough explanation of my results. No unnecessary procedures, just clear evidence-based medicine.' },
+      { id: 'r7-3', authorName: 'Noura Al-Misnad', authorInitials: 'NM', rating: 4, date: 'November 2024', verified: true, helpful: 5, text: 'Highly competent cardiologist. The appointment was timely and he was very attentive to my concerns. The West Bay clinic is easy to reach and has good parking.' },
+    ],
   },
   {
     id: 8,
@@ -301,6 +368,13 @@ export const DOCTORS: Doctor[] = [
     fee: 500,
     availableSlots: ['Wed, 11:00 AM', 'Wed, 3:00 PM', 'Thu, 9:00 AM', 'Sat, 10:30 AM'],
     avatarBg: 'bg-orange-100 text-orange-800',
+    lat: 25.3155,
+    lng: 51.4380,
+    writtenReviews: [
+      { id: 'r8-1', authorName: 'Fatima Al-Dosari', authorInitials: 'FD', rating: 5, date: 'March 2025', verified: true, helpful: 18, text: 'Dr. Fatima is extraordinary. She diagnosed my son\'s epilepsy correctly when others had missed it for months. Her ability to explain complex neurology to a worried mother in simple, reassuring terms is a true gift.' },
+      { id: 'r8-2', authorName: 'Aisha Mohammed', authorInitials: 'AM', rating: 5, date: 'January 2025', verified: true, helpful: 14, text: 'We came from Abu Dhabi to see Dr. Zahra — absolutely the right decision. Her expertise in pediatric neurology is unmatched. She is calm, brilliant, and genuinely cares about her patients.' },
+      { id: 'r8-3', authorName: 'Jean-Paul Martin', authorInitials: 'JM', rating: 5, date: 'December 2024', verified: true, helpful: 9, text: 'Excellent doctor, speaks English and French fluently. She took time to review all prior medical records and gave a very clear care plan. Sidra is lucky to have such talent.' },
+    ],
   },
   {
     id: 9,
@@ -335,6 +409,13 @@ export const DOCTORS: Doctor[] = [
     fee: 480,
     availableSlots: ['Tomorrow, 8:00 AM', 'Tomorrow, 11:00 AM', 'Thu, 3:00 PM', 'Sat, 9:00 AM'],
     avatarBg: 'bg-green-100 text-green-800',
+    lat: 25.2631,
+    lng: 51.4512,
+    writtenReviews: [
+      { id: 'r9-1', authorName: 'Saad Al-Kaabi', authorInitials: 'SK', rating: 5, date: 'February 2025', verified: true, helpful: 21, text: 'Dr. Hassan operated on my ACL and I was back on the football pitch within the timeline he promised. His surgical skill and the rehab protocol he set up were both world-class. A true sports medicine expert.' },
+      { id: 'r9-2', authorName: 'Marcus Johnson', authorInitials: 'MJ', rating: 5, date: 'January 2025', verified: true, helpful: 16, text: 'Best sports doctor in Qatar without question. I had a shoulder injury that had been mismanaged elsewhere. Dr. Al-Ansari sorted it out quickly and professionally. Aspetar is an incredible facility.' },
+      { id: 'r9-3', authorName: 'Ibrahim Khalil', authorInitials: 'IK', rating: 4, date: 'December 2024', verified: true, helpful: 8, text: 'Very good orthopedic surgeon. Knowledgeable, direct, and honest about what surgery would and would not achieve. I appreciated the realistic expectations he set from the start.' },
+    ],
   },
   {
     id: 10,
@@ -369,6 +450,13 @@ export const DOCTORS: Doctor[] = [
     fee: 400,
     availableSlots: ['Today, 6:00 PM', 'Tomorrow, 12:00 PM', 'Wed, 10:00 AM', 'Fri, 4:00 PM'],
     avatarBg: 'bg-violet-100 text-violet-800',
+    lat: 25.2869,
+    lng: 51.5336,
+    writtenReviews: [
+      { id: 'r10-1', authorName: 'Hind Al-Qassim', authorInitials: 'HQ', rating: 5, date: 'March 2025', verified: true, helpful: 24, text: 'Seeing Dr. Nour was the best decision I made for my mental health. She is warm, non-judgmental, and incredibly knowledgeable. For the first time I felt genuinely understood. The video option made it so easy to continue sessions.' },
+      { id: 'r10-2', authorName: 'Tariq Ziad', authorInitials: 'TZ', rating: 5, date: 'February 2025', verified: false, helpful: 18, text: 'As a Qatari man it took a lot for me to seek help, but Dr. Al-Rashid made the process feel natural and culturally safe. Her approach is deeply respectful of our values. I recommend her wholeheartedly.' },
+      { id: 'r10-3', authorName: 'Emma Clarke', authorInitials: 'EC', rating: 5, date: 'January 2025', verified: true, helpful: 13, text: 'Outstanding psychiatrist. Very evidence-based but also genuinely empathetic. Her CBT approach for my anxiety has been transformative. Cannot recommend her highly enough.' },
+    ],
   },
   {
     id: 11,
@@ -403,6 +491,13 @@ export const DOCTORS: Doctor[] = [
     fee: 500,
     availableSlots: ['Wed, 9:00 AM', 'Wed, 2:00 PM', 'Thu, 11:00 AM', 'Sun, 9:30 AM'],
     avatarBg: 'bg-cyan-100 text-cyan-800',
+    lat: 25.2847,
+    lng: 51.4162,
+    writtenReviews: [
+      { id: 'r11-1', authorName: 'Abdullah Al-Farsi', authorInitials: 'AF', rating: 5, date: 'January 2025', verified: true, helpful: 12, text: 'Dr. Tariq performed my disc surgery and the outcome exceeded all my expectations. I had been in chronic pain for 2 years — within 6 weeks of the procedure I was pain-free. His minimally invasive technique is excellent.' },
+      { id: 'r11-2', authorName: 'Rohit Kapoor', authorInitials: 'RK', rating: 4, date: 'December 2024', verified: true, helpful: 7, text: 'Very competent spine surgeon. He was honest about non-surgical options first and only recommended surgery when conservative treatment had been exhausted. That integrity means a lot.' },
+      { id: 'r11-3', authorName: 'Hassan Al-Naimi', authorInitials: 'HN', rating: 5, date: 'November 2024', verified: true, helpful: 9, text: 'Transformed my quality of life. The team at HMC National Spine Center is outstanding and Dr. Mansour leads it brilliantly. Post-op care was attentive and thorough.' },
+    ],
   },
   {
     id: 12,
@@ -437,6 +532,14 @@ export const DOCTORS: Doctor[] = [
     fee: 300,
     availableSlots: ['Today, 3:30 PM', 'Today, 5:00 PM', 'Tomorrow, 10:00 AM', 'Thu, 2:30 PM', 'Sat, 11:00 AM'],
     avatarBg: 'bg-rose-100 text-rose-800',
+    lat: 25.3718,
+    lng: 51.5528,
+    writtenReviews: [
+      { id: 'r12-1', authorName: 'Lina Al-Baker', authorInitials: 'LB', rating: 5, date: 'March 2025', verified: true, helpful: 19, text: 'Dr. Sara gave me the smile I always dreamed of. Her Invisalign treatment was faster than expected and completely painless. The Pearl clinic is beautiful and the team is so friendly. Worth every riyal.' },
+      { id: 'r12-2', authorName: 'Priyanka Menon', authorInitials: 'PM', rating: 5, date: 'February 2025', verified: true, helpful: 14, text: 'Incredible orthodontist. My teeth were a complicated case and she handled it with precision and creativity. The before-and-after is dramatic. I smile properly in photos for the first time in years.' },
+      { id: 'r12-3', authorName: 'Khalid Al-Sayed', authorInitials: 'KS', rating: 5, date: 'January 2025', verified: true, helpful: 10, text: 'Fixed my teenage daughter\'s crowded teeth beautifully. Dr. Karim was brilliant with her — patient, encouraging, and results-focused. The Pearl location is very convenient too.' },
+      { id: 'r12-4', authorName: 'Nicole Tran', authorInitials: 'NT', rating: 4, date: 'December 2024', verified: false, helpful: 6, text: 'Very professional and detail-oriented. A bit pricey but the quality justifies it. She keeps detailed records and always knows exactly where you are in the treatment plan.' },
+    ],
   },
 ];
 

@@ -18,7 +18,10 @@ import PrivacyPage from '@/pages/PrivacyPage';
 import SecurityPage from '@/pages/SecurityPage';
 import LoginPage from '@/pages/LoginPage';
 import SignupPage from '@/pages/SignupPage';
+import DashboardPage from '@/pages/DashboardPage';
+import SpecialtyLandingPage, { SPECIALTY_CONFIGS } from '@/pages/SpecialtyLandingPage';
 import NotFound from '@/pages/not-found';
+import InstallBanner from '@/components/InstallBanner';
 
 const queryClient = new QueryClient();
 
@@ -53,6 +56,10 @@ function Layout() {
                   <Route path="/about" element={<AboutPage />} />
                   <Route path="/for-providers" element={<ForProvidersPage />} />
                   <Route path="/help" element={<HelpPage />} />
+                  <Route path="/dashboard" element={<DashboardPage />} />
+                  {SPECIALTY_CONFIGS.map((c) => (
+                    <Route key={c.slug} path={`/${c.slug}`} element={<SpecialtyLandingPage />} />
+                  ))}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
@@ -76,6 +83,7 @@ function App() {
           </BrowserRouter>
         </I18nProvider>
         <Toaster />
+        <InstallBanner />
       </TooltipProvider>
     </QueryClientProvider>
   );
